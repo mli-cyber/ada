@@ -1,13 +1,29 @@
-"""Secrets backend (scaffold stub).
-
-Supports env (default), AWS Secrets Manager, or SSM via ``ADA__SECRETS_BACKEND``.
-Roadmap: Phase 0 (Architecture and Security Foundation).
-"""
+"""Secrets backend boundary."""
 
 from __future__ import annotations
 
+import os
 
-def get_secret(name: str) -> str:
-    """Resolve a secret by name. Scaffold stub - see roadmap Phase 0."""
+from ada.config import AdaConfig
 
-    raise NotImplementedError("Secrets resolution is implemented in roadmap Phase 0.")
+
+def get_secret(
+    name: str,
+    config: AdaConfig | None = None,
+    *,
+    environ: dict[str, str] | None = None,
+) -> str:
+    """Resolve a secret without logging or returning backend metadata."""
+
+    resolved_config = config or AdaConfig.from_env(environ)
+    backend = resolved_config.secrets_backend
+    if backend == "env":
+        values = environ if environ is not None else os.environ
+        if name not in values:
+            raise KeyError(name)
+        return values[name]
+    if backend == "aws-secrets-manager":
+        raise NotImplementedError("AWS Secrets Manager adapter is implemented in Phase 19")
+    if backend == "ssm":
+        raise NotImplementedError("AWS SSM adapter is implemented in Phase 19")
+    raise ValueError(f"Unsupported secrets backend: {backend}")

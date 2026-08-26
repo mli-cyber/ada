@@ -65,9 +65,8 @@ def main() -> None:
         natural language, upload messy files, and get back clean, structured, auditable
         data and reports.
 
-        **This is a scaffold build.** The application foundation (config, Bedrock client
-        boundary, Streamlit shell) is in place; domain features are implemented per the
-        roadmap.
+        **This is a foundation build.** Phase 0 platform/security boundaries are available;
+        domain features will be implemented in later roadmap phases.
         """
     )
 

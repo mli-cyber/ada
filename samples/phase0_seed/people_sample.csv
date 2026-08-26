@@ -1,0 +1,7 @@
+person_id,name,rank,unit,duty_phone,personal_phone,official_email,home_address,emergency_contact
+P001,Avery Morgan,CPT,HHC,555-0101,555-1101,avery.morgan@example.test,101 Example Lane,Jordan Morgan 555-2101
+P002,Riley Chen,SSG,Alpha,555-0102,555-1102,riley.chen@example.test,102 Example Lane,Casey Chen 555-2102
+P003,Jordan Patel,SGT,Bravo,555-0103,555-1103,jordan.patel@example.test,103 Example Lane,Taylor Patel 555-2103
+P004,Casey Rivera,1LT,Charlie,555-0104,555-1104,casey.rivera@example.test,104 Example Lane,Alex Rivera 555-2104
+P005,Taylor Brooks,SPC,HHC,555-0105,555-1105,taylor.brooks@example.test,105 Example Lane,Jamie Brooks 555-2105
+P006,Alex Kim,MAJ,BN HQ,555-0106,555-1106,alex.kim@example.test,106 Example Lane,Sam Kim 555-2106

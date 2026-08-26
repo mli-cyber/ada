@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          version: "0.11.7"
+          python-version: "3.13"
+          enable-cache: true
+
+      - name: Install locked dependencies
+        run: uv sync --frozen
+
+      - name: Reject tracked local data
+        shell: bash
+        run: |
+          if [[ -n "$(git ls-files 'data/**')" ]]; then
+            echo "Files under data/ must never be tracked."
+            git ls-files 'data/**'
+            exit 1
+          fi
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Type check
+        run: uv run mypy src/ada
+
+      - name: Unit tests
+        run: uv run pytest
+
+      - name: Dependency audit
+        run: ./scripts/audit_dependencies.sh
+
+      - name: Documentation links and structure
+        run: python scripts/check_docs.py
+
+      - name: Parse Mermaid diagrams
+        run: |
+          npm install --no-save @mermaid-js/mermaid-cli@11.16.0
+          while IFS= read -r file; do
+            if rg --quiet '```mermaid' "$file"; then
+              output="/tmp/mermaid-${file//\//-}"
+              npx mmdc -i "$file" -o "$output"
+            fi
+          done < <(git ls-files '*.md')
+
+  secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out full history
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for secrets
+        uses: gitleaks/gitleaks-action@dcedce43c6f43de0b836d1fe38946645c9c638dc # v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

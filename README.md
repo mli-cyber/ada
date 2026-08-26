@@ -1,16 +1,17 @@
 # Ada - AI-Driven Assistant
 
 **Ada** is a conversational, agentic assistant for **personnel, training, and operations**
-data management. Users talk to Ada in natural language, upload messy files (XLSX/CSV/PDF/DOC/
-TXT), and get back clean, structured, auditable data and reports.
+data management. Users talk to Ada in natural language, upload messy files
+(`XLSX/CSV/TXT/PDF/DOC/DOCX`; `PPTX` planned), and get back clean, structured, auditable
+data and reports.
 
-> **Status:** Scaffold / early foundation. The application skeleton, AWS Bedrock connection
-> boundary, configuration, and Streamlit shell are in place; domain features are implemented
-> per the roadmap. Most `src/ada/*` modules are intentional placeholders that raise
-> `NotImplementedError` and reference their roadmap phase.
+> **Status:** Phase 0 foundation. Local storage, security, review/provenance, model-routing,
+> intake, audit, health, and CI boundaries are implemented; domain features will be built in
+> later roadmap phases. Later-phase domain modules remain intentional placeholders.
 
-**Stack:** Streamlit UI + AWS Bedrock (via Strands) + PostgreSQL (source of truth) + Chroma
-(semantic/evidence). Local-first by default; the only hard cloud dependency is Bedrock.
+**Stack:** Streamlit UI + AWS Bedrock (via Strands) + a relational source of truth (SQLite
+local default; PostgreSQL opt-in/production path) + Chroma (semantic/evidence). Local-first
+by default; the only hard cloud dependency is Bedrock.
 
 ## Positioning
 
@@ -33,12 +34,16 @@ Ada connects to AWS Bedrock using your existing AWS profile:
 AWS_PROFILE=<your-sso-or-iam-profile>
 AWS_REGION=us-east-1
 ADA__BEDROCK_CHAT_MODEL_ID=us.anthropic.claude-sonnet-5
+ADA__MODEL_TIER=balanced
 ```
 
-Run the tests:
+Run local quality checks:
 
 ```bash
+uv run ruff check .
+uv run mypy src/ada
 uv run pytest
+./scripts/audit_dependencies.sh
 ```
 
 ## Layout
@@ -47,11 +52,11 @@ uv run pytest
 app/streamlit_app.py      # Streamlit UI entrypoint (presentation only)
 app/pages/                # multipage nav (Home, Assistant, Personnel, ... , Administration)
 src/ada/config.py         # AdaConfig: ADA__* + AWS_* env loader (real)
-src/ada/bedrock.py        # AWS Bedrock client boundary (stub methods)
+src/ada/bedrock.py        # AWS Bedrock client + live healthcheck boundary
 src/ada/                  # platform, domain, registry, agents, tools, services,
-                          #   ingestion, provenance, quality, reports, workflows (stubs)
+                          #   ingestion, provenance, quality, reports, workflows
 evals/                    # golden datasets + per-phase acceptance evals (placeholder)
-tests/                    # scaffold smoke tests
+tests/                    # platform unit tests + manual Bedrock integration test
 doc/roadmap_v3.md         # the active roadmap (Phases 0-19); supersedes v2
 doc/product.md            # product overview and naming
 ```
@@ -64,8 +69,13 @@ full list. `.env` is gitignored.
 
 ## Documentation
 
-- [`doc/roadmap_v3.md`](doc/roadmap_v3.md) - active roadmap, Phases 0-19 (MVP = Phases 0-11)
+- [`doc/roadmap_v3.md`](doc/roadmap_v3.md) - active roadmap, Phases 0-19
+  (MVP = Phases 0-11, including Phase 2A)
 - [`doc/product.md`](doc/product.md) - product overview and naming
+- [`doc/diagrams.md`](doc/diagrams.md) - architecture and flow diagrams
+- [`doc/phase_0.md`](doc/phase_0.md) - executable Phase 0 foundation specification
+- [`doc/architecture.md`](doc/architecture.md) - implemented Phase 0 boundaries and controls
+- [`doc/security_exceptions.md`](doc/security_exceptions.md) - temporary, reviewed dependency exceptions
 
 ## Relationship to IWB
 

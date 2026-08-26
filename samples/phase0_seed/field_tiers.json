@@ -1,0 +1,11 @@
+{
+  "person_id": "internal",
+  "name": "public",
+  "rank": "public",
+  "unit": "public",
+  "duty_phone": "internal",
+  "personal_phone": "sensitive",
+  "official_email": "internal",
+  "home_address": "sensitive",
+  "emergency_contact": "sensitive"
+}

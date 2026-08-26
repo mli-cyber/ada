@@ -1,0 +1,9 @@
+Synthetic Policy SAMPLE-001
+
+Purpose: exercise Ada's object-storage and untrusted-document boundaries.
+
+Training status reports must use only the minimum fields required to identify the person,
+organization, course, and completion status. Home addresses, dates of birth, personal phone
+numbers, and government identifiers are not required for this purpose.
+
+This file is synthetic test content. It is not an authoritative policy.

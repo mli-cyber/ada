@@ -1,0 +1,40 @@
+name: Bedrock Integration
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  bedrock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: bedrock-integration
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+      ADA_RUN_BEDROCK_INTEGRATION: "1"
+      ADA__MODEL_TIER: balanced
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          version: "0.11.7"
+          python-version: "3.13"
+          enable-cache: true
+
+      - name: Configure short-lived AWS credentials
+        uses: aws-actions/configure-aws-credentials@cabfdba3510de1431bac9dba27511d97497fc100 # v5
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install locked dependencies
+        run: uv sync --frozen
+
+      - name: Invoke configured Bedrock model
+        run: uv run pytest -m integration tests/test_bedrock_integration.py

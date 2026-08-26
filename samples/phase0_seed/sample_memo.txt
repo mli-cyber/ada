@@ -1,0 +1,8 @@
+MEMORANDUM FOR RECORD
+
+SUBJECT: Synthetic Phase 0 Storage Fixture
+
+1. This document exists only to validate local object storage, hashing, intake registration,
+and audit logging.
+
+2. It contains no real personnel or operational information.

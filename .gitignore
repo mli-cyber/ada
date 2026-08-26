@@ -24,6 +24,7 @@ htmlcov/
 uv.lock.tmp
 
 # Local runtime data (Ada writes local stores here by default)
+data/
 src/ada/tmp/
 
 # OS / editor

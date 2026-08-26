@@ -45,7 +45,7 @@ class AdaBedrockClient:
         environments without boto3 configured.
         """
 
-        import boto3  # local import keeps module import cheap and side-effect free
+        import boto3  # type: ignore[import-untyped]  # local, import-safe
 
         session_kwargs: dict[str, Any] = {"region_name": self._config.aws_region}
         if self._config.aws_profile:
@@ -65,6 +65,29 @@ class AdaBedrockClient:
         raise NotImplementedError(
             "AdaBedrockClient.chat is a scaffold stub; implemented in roadmap Phase 3+."
         )
+
+    def healthcheck(self, *, raise_on_error: bool = False) -> bool:
+        """Send a minimal, bounded Converse request to the active model."""
+
+        try:
+            if self._runtime is None:
+                self.connect()
+            assert self._runtime is not None
+            response = self._runtime.converse(
+                modelId=self._config.active_chat_model,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [{"text": "Reply with exactly OK."}],
+                    }
+                ],
+                inferenceConfig={"maxTokens": 8},
+            )
+            return bool(response.get("output", {}).get("message", {}).get("content"))
+        except Exception:
+            if raise_on_error:
+                raise
+            return False
 
     def embed(self, texts: list[str], **kwargs: Any) -> list[list[float]]:
         """Return embeddings for ``texts`` using the fixed Titan embedding model.
