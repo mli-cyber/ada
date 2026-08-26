@@ -28,6 +28,11 @@ uv sync
 ./scripts/run_app.sh
 ```
 
+The development launcher binds to `localhost` because the Administration page includes a
+separate `AWS Session (Local Only)` tab with a temporary SSO device-login helper. General
+demo surfaces omit the AWS profile and region; `.env` and AWS credential caches are never
+committed.
+
 Ada connects to AWS Bedrock using your existing AWS profile:
 
 ```dotenv

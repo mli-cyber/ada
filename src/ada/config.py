@@ -170,15 +170,21 @@ class AdaConfig:
         return "unknown"
 
     def describe(self) -> dict[str, str]:
-        """Return a non-secret summary suitable for display in the Streamlit sidebar."""
+        """Return a demo-safe summary suitable for general application surfaces."""
 
         return {
-            "AWS Region": self.aws_region,
-            "AWS Profile": self.aws_profile or "(default credential chain)",
             "Database": self.db_backend,
             "Role": self.dev_role,
             "Model Tier": self.active_tier,
             "Chat Model": self.active_chat_model,
             "Embedding Model": self.embedding_model_id,
             "Profile": self.profile,
+        }
+
+    def describe_aws(self) -> dict[str, str]:
+        """Return non-secret AWS session identifiers for the dedicated local-only tab."""
+
+        return {
+            "AWS Region": self.aws_region,
+            "AWS Profile": self.aws_profile or "(default credential chain)",
         }

@@ -14,17 +14,10 @@ cd "$ROOT_DIR"
 echo "Starting Ada (AI-Driven Assistant)..."
 export PYTHONPATH="${ROOT_DIR}/src:${PYTHONPATH:-}"
 
-# Bind on all interfaces so other devices on the LAN can reach the app, but pass the
-# server address explicitly so Streamlit never opens a raw UDP socket to auto-detect the
-# LAN IP (that syscall fails in sandboxed/restricted environments).
-LAN_IP="$(hostname -I 2>/dev/null | awk '{print $1}')"
-
-if [[ -n "${LAN_IP}" ]]; then
-  STREAMLIT_ARGS=(streamlit run app/streamlit_app.py --server.address=0.0.0.0 --browser.serverAddress="${LAN_IP}")
-else
-  echo "Could not determine a LAN IP; app will only be reachable at localhost:8501."
-  STREAMLIT_ARGS=(streamlit run app/streamlit_app.py --server.address=localhost)
-fi
+# The temporary AWS SSO helper displays a short-lived device code, so the development
+# launcher is intentionally localhost-only. Production authentication replaces this helper.
+echo "Local development URL: http://localhost:8501"
+STREAMLIT_ARGS=(streamlit run app/streamlit_app.py --server.address=localhost)
 
 if command -v uv >/dev/null 2>&1; then
   # `uv run` resolves this project's own virtualenv (syncing from pyproject.toml if

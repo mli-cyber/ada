@@ -18,6 +18,7 @@ MODULES = [
     "ada.config",
     "ada.bedrock",
     "ada.platform.audit",
+    "ada.platform.aws_auth",
     "ada.platform.dataguard",
     "ada.platform.db",
     "ada.platform.guardrails",

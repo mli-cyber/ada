@@ -71,6 +71,16 @@ The default secrets backend reads environment variables. AWS Secrets Manager and
 adapter contracts for Phase 19. Secret values are never included in `AdaConfig.describe()`,
 logs, or the UI.
 
+For local development, the Administration page can launch the AWS CLI's SSO device flow.
+The launcher binds Streamlit to localhost, streams only display-safe CLI output, and never
+copies AWS tokens or credential-cache files into the repository. This helper is removed when
+application-user OIDC replaces development identity.
+
+> **Production blocker:** remove the `AWS Session (Local Only)` tab and
+> `ada.platform.aws_auth` before enabling non-local access. Production authentication must
+> use application-user OIDC and workload identity; it must never display AWS credential
+> values.
+
 Local reset requires explicit confirmation plus `admin` permission. It clears SQLite, Chroma,
 and object storage, reinitializes platform tables, and records the operation. Production
 retention, legal hold, backup, and KMS policies are hardened in Phase 19; the initial audit

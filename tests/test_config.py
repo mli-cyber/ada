@@ -56,11 +56,15 @@ def test_env_overrides() -> None:
 def test_describe_is_non_secret() -> None:
     cfg = AdaConfig.from_env({"AWS_PROFILE": "ada-dev"})
     described = cfg.describe()
-    assert described["AWS Profile"] == "ada-dev"
+    aws_described = cfg.describe_aws()
+    assert "AWS Profile" not in described
+    assert "AWS Region" not in described
+    assert aws_described["AWS Profile"] == "ada-dev"
     assert "Chat Model" in described
     assert "Model Tier" in described
     assert "Database" in described
     assert not any("secret" in key.lower() for key in described)
+    assert not any("secret" in key.lower() for key in aws_described)
 
 
 def test_invalid_model_tier_rejected() -> None:

@@ -26,3 +26,14 @@ def test_phase0_streamlit_pages_render(path: str) -> None:
     repository_root = Path(__file__).resolve().parents[1]
     app = AppTest.from_file(repository_root / path).run(timeout=30)
     assert not app.exception
+
+
+def test_administration_separates_local_aws_session() -> None:
+    repository_root = Path(__file__).resolve().parents[1]
+    app = AppTest.from_file(
+        repository_root / "app/pages/10_Administration.py"
+    ).run(timeout=30)
+    assert [tab.label for tab in app.tabs] == [
+        "Platform & Security",
+        "AWS Session (Local Only)",
+    ]
