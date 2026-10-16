@@ -24,7 +24,7 @@ identity = [
     "pyjwt[crypto]>=2.13.0",
 ]
 postgres = [
-    "psycopg[binary]>=3.3.4",
+    "psycopg[binary]>=3.3.5",
 ]
 
 [dependency-groups]
