@@ -1,5 +1,20 @@
-"""Stable application services called by Streamlit and agents.
+"""Stable application services called by Streamlit and agents."""
 
-Business logic, authorization, and persistence live here - never in Streamlit page
-scripts. Roadmap: Phases 1, 3, 4, 9, 10, 15, 18.
-"""
+from ada.services.canonical import CanonicalService, MutationResult
+from ada.services.organization import (
+    OrganizationHierarchyService,
+    OrganizationNode,
+    OrganizationScopeService,
+    PersonnelRollup,
+    RollupService,
+)
+
+__all__ = [
+    "CanonicalService",
+    "MutationResult",
+    "OrganizationHierarchyService",
+    "OrganizationNode",
+    "OrganizationScopeService",
+    "PersonnelRollup",
+    "RollupService",
+]

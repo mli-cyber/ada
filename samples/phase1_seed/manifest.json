@@ -1,0 +1,9 @@
+{
+  "format_version": 1,
+  "dataset": "ada-phase1-canonical-demo",
+  "uuid_namespace": "9f9e3a26-0dd8-5df2-a51f-df42f7095084",
+  "fixture": "seed.json",
+  "synthetic_only": true,
+  "contains_plaintext_national_identifiers": false,
+  "effective_at": "2026-01-01T00:00:00+00:00"
+}

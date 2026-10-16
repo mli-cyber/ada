@@ -11,7 +11,7 @@ clean, structured, auditable data and reports.
 ## Architecture at a glance
 
 > Diagrams are **living** and will be updated as the design evolves. Full set with
-> explanations: [`diagrams.md`](diagrams.md).
+> explanations: [`diagrams.md`](../architecture/diagrams.md).
 
 **System (target architecture, simplified):**
 
@@ -89,7 +89,8 @@ flowchart TD
 
 ## Documentation
 
-- [`roadmap_v3.md`](roadmap_v3.md) - the active roadmap (Phases 0-19), which supersedes the
+- [`roadmap_v3.md`](../roadmap_v3.md) - the active roadmap (Phases 0-19), which supersedes the
   earlier v2 roadmap.
-- [`diagrams.md`](diagrams.md) - all architecture & flow diagrams with explanations.
-- [`phase_0.md`](phase_0.md) - the concrete Phase 0 (foundation) build plan.
+- [`diagrams.md`](../architecture/diagrams.md) - all architecture & flow diagrams.
+- [`phase_0.md`](../phases/phase_0.md) - the concrete Phase 0 foundation build plan.
+- [`phase_1.md`](../phases/phase_1.md) - the canonical domain model specification.

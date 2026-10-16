@@ -44,6 +44,7 @@ packages = ["src/ada"]
 testpaths = ["tests"]
 markers = [
     "integration: requires real AWS credentials/network; excluded by default",
+    "postgres: requires an explicit disposable PostgreSQL test database",
 ]
 addopts = "-m 'not integration'"
 

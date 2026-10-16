@@ -3,7 +3,8 @@
 > **Status: historical input to roadmap v3.** Most "Partial" items below — Policy
 > Foundation, Source Authority, My Work, Case Management, Domain Events, Connector Framework,
 > and AdaState scaling — have since been incorporated into
-> [`../roadmap_v3.md`](../roadmap_v3.md) / [`../phase_0.md`](../phase_0.md). Kept for the
+> [`../roadmap_v3.md`](../roadmap_v3.md) /
+> [`../phases/phase_0.md`](../phases/phase_0.md). Kept for the
 > sector-by-sector rationale, not as an open TODO list.
 
 > **Purpose:** A concise assessment snapshot of the then-current Ada `roadmap_v3.md` and

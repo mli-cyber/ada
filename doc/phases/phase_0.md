@@ -1,7 +1,7 @@
 # Ada - Phase 0: Architecture and Security Foundation
 
 > This document describes **Phase 0** of the Ada roadmap. It supplements
-> [`roadmap_v3.md`](roadmap_v3.md) (see the Phase 0 section) with the concrete,
+> [`roadmap_v3.md`](../roadmap_v3.md) (see the Phase 0 section) with the concrete,
 > agreed-upon plan for the foundation build.
 
 > **Living diagrams (subject to change).** The flowcharts here reflect current design intent
@@ -43,7 +43,7 @@ only stores + registers uploaded files, without parsing, is in scope - see item 
   (minimum-necessary fields to the model, 7.8), a **minimal review primitive**, the early
   **provenance-ref contract** (fixes Phase 6<->7), **capability-based model routing**, and
   `AdaState` as a **reference envelope**. See
-  [`new_ideas/ada_roadmap_v3_improvement_recommendations.md`](new_ideas/ada_roadmap_v3_improvement_recommendations.md).
+  [`new_ideas/ada_roadmap_v3_improvement_recommendations.md`](../new_ideas/ada_roadmap_v3_improvement_recommendations.md).
 - **Multi-model + budget tiers:** a `ModelRegistry` + Model Router with **3 tiers**
   (`high`|`balanced`|`economy`, default `balanced`) and a
   **task-class-to-capability map**. Tier profiles
@@ -96,21 +96,22 @@ flowchart TD
     Svc --> Bed[bedrock: connect + healthcheck - chat/embed stubbed]
 ```
 
-Also collected as [Diagram 15 in `diagrams.md`](diagrams.md#15-phase-0-component-boundaries).
+Also collected as
+[Diagram 15 in `diagrams.md`](../architecture/diagrams.md#15-phase-0-component-boundaries).
 
 **Key rule (no unrestricted SQL):** only the service/tool layer may touch the database
 boundary. Agents never receive a raw-SQL surface; they call controlled tools/services.
 
 ## 5. Current state
 
-- **Already real:** [`src/ada/config.py`](../src/ada/config.py),
-  [`src/ada/bedrock.py`](../src/ada/bedrock.py) `connect()`, and the Streamlit shell
-  ([`app/streamlit_app.py`](../app/streamlit_app.py)) plus placeholder pages.
-- **Stubs to replace:** [`src/ada/platform/identity.py`](../src/ada/platform/identity.py),
-  [`src/ada/platform/audit.py`](../src/ada/platform/audit.py),
-  [`src/ada/platform/secrets.py`](../src/ada/platform/secrets.py),
-  [`src/ada/platform/storage.py`](../src/ada/platform/storage.py),
-  [`src/ada/registry/profiles.py`](../src/ada/registry/profiles.py).
+- **Already real:** [`src/ada/config.py`](../../src/ada/config.py),
+  [`src/ada/bedrock.py`](../../src/ada/bedrock.py) `connect()`, and the Streamlit shell
+  ([`app/streamlit_app.py`](../../app/streamlit_app.py)) plus placeholder pages.
+- **Stubs to replace:** [`src/ada/platform/identity.py`](../../src/ada/platform/identity.py),
+  [`src/ada/platform/audit.py`](../../src/ada/platform/audit.py),
+  [`src/ada/platform/secrets.py`](../../src/ada/platform/secrets.py),
+  [`src/ada/platform/storage.py`](../../src/ada/platform/storage.py),
+  [`src/ada/registry/profiles.py`](../../src/ada/registry/profiles.py).
 - **Not present yet:** DB access layer, vector-DB boundary, PII/RBAC and Data Guard models,
   review/provenance-ref/model-registry contracts, untrusted-document/guardrail helpers,
   architecture doc.
@@ -168,7 +169,7 @@ boundary. Agents never receive a raw-SQL surface; they call controlled tools/ser
     (full vs role-redacted), an **object-store round-trip** action, a **model-tier selector**
     (High / Balanced / Economy) showing each tier's resolved primary + fallbacks + ceilings,
     and a guarded **reset Danger Zone** (item 17).
-12. **Architecture doc** - new `doc/architecture.md`: boundaries, auth/authz + PII model,
+12. **Architecture doc** - `doc/architecture/architecture.md`: boundaries, auth/authz + PII model,
     no-unrestricted-SQL guarantee, retention policy, and the untrusted-doc/guardrail contracts.
 13. **Dependencies** (`pyproject.toml`): no new core deps (stdlib `sqlite3`, existing
     `chromadb`, `boto3`); `psycopg` stays the opt-in `[postgres]` extra. Add `pip-audit` to
@@ -242,7 +243,7 @@ Recorded so nothing is lost; each maps to the phase that will build it.
 
 ## 8. Exit-criteria mapping
 
-- **Base architecture documented** -> `doc/architecture.md` (+ this file)
+- **Base architecture documented** -> `doc/architecture/architecture.md` (+ this file)
 - **Auth/authz + PII model established** -> `identity.py` (RBAC + tiers + redaction)
 - **Minimum-necessary model context established** -> `dataguard.py`
 - **Review/provenance/model-selection contracts usable** -> `review.py`,
@@ -266,7 +267,7 @@ Recorded so nothing is lost; each maps to the phase that will build it.
 - `uv run ruff check .`
 - `uv run mypy src/ada`
 - `./scripts/audit_dependencies.sh` (temporary Chroma exceptions are documented in
-  `doc/security_exceptions.md`; all other advisories remain blocking)
+  `doc/architecture/security_exceptions.md`; all other advisories remain blocking)
 - `python scripts/check_docs.py`
 - Confirm `.github/workflows/ci.yml` passes without AWS credentials.
 - Manually dispatch `bedrock-integration.yml` after configuring the protected environment and

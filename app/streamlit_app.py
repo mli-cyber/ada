@@ -1,9 +1,8 @@
-"""Ada - Streamlit application shell (scaffold).
+"""Ada - Streamlit application shell.
 
 Presentation layer only. This entrypoint renders Ada's branding, a home/dashboard
 landing view, and a sidebar summarizing the resolved (non-secret) configuration. The
-individual pages under ``app/pages/`` are placeholders that state which roadmap phase
-implements them.
+individual pages under ``app/pages/`` call controlled application services.
 
 Architecture rule (see doc/roadmap_v3.md Section 4.1): Streamlit is the presentation
 layer, not the business-logic layer. Real logic will live in ``src/ada/services`` and
@@ -44,8 +43,8 @@ def _sidebar(config: AdaConfig) -> None:
         st.sidebar.write(f"**{key}:** `{value}`")
     st.sidebar.markdown("---")
     st.sidebar.info(
-        "Scaffold build. Feature pages are placeholders mapped to roadmap phases "
-        "(see doc/roadmap_v3.md)."
+        "Phase 0 foundation complete. Phase 1 canonical personnel and organization "
+        "read-only demos are available."
     )
     st.sidebar.caption(f"v{__version__}")
 
@@ -65,8 +64,8 @@ def main() -> None:
         natural language, upload messy files, and get back clean, structured, auditable
         data and reports.
 
-        **This is a foundation build.** Phase 0 platform/security boundaries are available;
-        domain features will be implemented in later roadmap phases.
+        **Phase 1 is in progress.** Phase 0 platform/security boundaries are complete, and
+        canonical personnel and organization data are available through read-only demos.
         """
     )
 
@@ -75,8 +74,8 @@ def main() -> None:
     pages = [
         ("Home / Dashboard", "Live"),
         ("AI Assistant", "Phase 3+"),
-        ("Personnel", "Phase 1/3"),
-        ("Organization / Assignments", "Phase 1/3"),
+        ("Personnel", "Phase 1 read-only"),
+        ("Organization / Assignments", "Phase 1 read-only"),
         ("Training", "Phase 10"),
         ("Due-Outs / Suspenses", "Phase 9"),
         ("Administrative Actions", "Phase 12"),

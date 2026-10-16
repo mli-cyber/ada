@@ -5,9 +5,9 @@ data management. Users talk to Ada in natural language, upload messy files
 (`XLSX/CSV/TXT/PDF/DOC/DOCX`; `PPTX` planned), and get back clean, structured, auditable
 data and reports.
 
-> **Status:** Phase 0 foundation. Local storage, security, review/provenance, model-routing,
-> intake, audit, health, and CI boundaries are implemented; domain features will be built in
-> later roadmap phases. Later-phase domain modules remain intentional placeholders.
+> **Status:** Phase 0 foundation complete; Phase 1 canonical domain model in progress. Local
+> storage, security, review/provenance, model-routing, intake, audit, health, and CI boundaries
+> are implemented.
 
 **Stack:** Streamlit UI + AWS Bedrock (via Strands) + a relational source of truth (SQLite
 local default; PostgreSQL opt-in/production path) + Chroma (semantic/evidence). Local-first
@@ -25,8 +25,12 @@ identity. A neutral `general` profile adapts the same core to civilian HR.
 ```bash
 cp example.env .env    # then edit .env with your AWS profile/region/model settings
 uv sync
+uv run python scripts/seed_phase1.py
 ./scripts/run_app.sh
 ```
+
+The seed command loads 30 deterministic, synthetic canonical records and is safe to run more
+than once. Open the Personnel and Organization pages for the Phase 1 read-only demos.
 
 The development launcher binds to `localhost` because the Administration page includes a
 separate `AWS Session (Local Only)` tab with a temporary SSO device-login helper. General
@@ -48,6 +52,7 @@ Run local quality checks:
 uv run ruff check .
 uv run mypy src/ada
 uv run pytest
+uv run pytest tests/test_postgres.py -m postgres  # requires ADA_TEST_POSTGRES_URL
 ./scripts/audit_dependencies.sh
 ```
 
@@ -63,7 +68,9 @@ src/ada/                  # platform, domain, registry, agents, tools, services,
 evals/                    # golden datasets + per-phase acceptance evals (placeholder)
 tests/                    # platform unit tests + manual Bedrock integration test
 doc/roadmap_v3.md         # the active roadmap (Phases 0-19); supersedes v2
-doc/product.md            # product overview and naming
+doc/phases/               # executable phase specifications
+doc/architecture/         # boundaries, diagrams, and security exceptions
+doc/product/              # product overview and demo-data contracts
 ```
 
 ## Configuration
@@ -74,16 +81,10 @@ full list. `.env` is gitignored.
 
 ## Documentation
 
+- [`doc/README.md`](doc/README.md) - documentation index
 - [`doc/roadmap_v3.md`](doc/roadmap_v3.md) - active roadmap, Phases 0-19
   (MVP = Phases 0-11, including Phase 2A)
-- [`doc/product.md`](doc/product.md) - product overview and naming
-- [`doc/diagrams.md`](doc/diagrams.md) - architecture and flow diagrams
-- [`doc/phase_0.md`](doc/phase_0.md) - executable Phase 0 foundation specification
-- [`doc/architecture.md`](doc/architecture.md) - implemented Phase 0 boundaries and controls
-- [`doc/security_exceptions.md`](doc/security_exceptions.md) - temporary, reviewed dependency exceptions
-
-## Relationship to IWB
-
-Ada reuses architectural patterns from the AISI Intelligence Workbench (agent orchestration,
-ingestion, RAG, provenance, validation, human review, reporting) and the same AWS Bedrock
-connection pattern. IWB is a pattern source, not a parent product.
+- [`doc/phases/phase_0.md`](doc/phases/phase_0.md) - Phase 0 foundation specification
+- [`doc/phases/phase_1.md`](doc/phases/phase_1.md) - Phase 1 canonical model specification
+- [`doc/architecture/architecture.md`](doc/architecture/architecture.md) - system boundaries
+- [`doc/product/product.md`](doc/product/product.md) - product overview and naming

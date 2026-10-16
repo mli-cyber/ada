@@ -5,7 +5,8 @@
 > routing, AdaState reference envelope, organization roll-ups, source authority and
 > reconciliation, `as_of` reporting, My Work, case management/domain events, and the connector
 > framework have been incorporated. Retained for historical rationale; treat
-> [`../roadmap_v3.md`](../roadmap_v3.md) and [`../phase_0.md`](../phase_0.md) as authoritative
+> [`../roadmap_v3.md`](../roadmap_v3.md) and
+> [`../phases/phase_0.md`](../phases/phase_0.md) as authoritative
 > if anything conflicts.
 
 > **Purpose:** This document originally captured recommended additions, corrections, and

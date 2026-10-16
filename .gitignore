@@ -27,6 +27,9 @@ uv.lock.tmp
 data/
 src/ada/tmp/
 
+# Local idea drafts (accepted plans live elsewhere in doc/)
+doc/new_ideas/
+
 # OS / editor
 .DS_Store
 *.swp

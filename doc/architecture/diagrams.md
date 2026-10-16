@@ -1,14 +1,14 @@
 # Ada - Architecture & Flow Diagrams
 
 This is the single place that collects Ada's flowcharts with a short explanation of each.
-Diagrams 1–8 also appear in [`roadmap_v3.md`](roadmap_v3.md) in context; diagrams 9–16 live
+Diagrams 1–8 also appear in [`roadmap_v3.md`](../roadmap_v3.md) in context; diagrams 9–16 live
 here and in any directly relevant phase document. The headline diagrams (1–2, simplified)
-also appear in [`product.md`](product.md).
+also appear in [`product.md`](../product/product.md).
 
 > **Living diagrams (subject to change).** These flowcharts reflect the *current* design
 > intent and will be **updated/replaced** as the architecture is refined or as phases are
 > implemented. If a diagram ever diverges from the code, treat the implementation and the
-> per-phase docs (e.g. [`phase_0.md`](phase_0.md)) as the source of truth.
+> per-phase docs (e.g. [`phase_0.md`](../phases/phase_0.md)) as the source of truth.
 
 ## Contents
 
@@ -432,7 +432,7 @@ flowchart TD
     Svc --> Bed[bedrock: connect + healthcheck - chat/embed stubbed]
 ```
 
-See [`phase_0.md`](phase_0.md), Section 4.
+See [`phase_0.md`](../phases/phase_0.md), Section 4.
 
 ---
 
@@ -464,4 +464,4 @@ flowchart LR
     Health -->|no| Rollback[Automatic rollback]
 ```
 
-See roadmap Section 7.10 and [`phase_0.md`](phase_0.md), item 18.
+See roadmap Section 7.10 and [`phase_0.md`](../phases/phase_0.md), item 18.

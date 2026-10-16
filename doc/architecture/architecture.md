@@ -1,8 +1,8 @@
-# Ada Phase 0 Architecture
+# Ada Architecture
 
-This document records the platform and security boundaries implemented in Phase 0. The
-broader target architecture and delivery sequence remain in
-[`roadmap_v3.md`](roadmap_v3.md).
+This document records the platform, security, and canonical-data boundaries implemented
+through Phase 1. The broader target architecture and delivery sequence remain in
+[`roadmap_v3.md`](../roadmap_v3.md).
 
 ## Component boundary
 
@@ -33,6 +33,25 @@ database connection. Only platform and domain service code may use the database 
   `LocalObjectStore`, while the S3 adapter remains a Phase 19 contract.
 - File intake stores and registers uploads but does not parse them into domain records.
 
+## Canonical relational boundary
+
+Phase 1 adds typed canonical entities under `ada.domain`, temporal repositories under
+`ada.persistence`, and secured application services under `ada.services`. The repository layer
+is not exposed to agents or Streamlit pages. Service reads enforce RBAC and field-level PII
+filtering; governed writes add audit, provenance, and version-aware `AdaState` references.
+
+Schema changes are forward-only migrations under `ada.migrations`. The migration ledger stores
+SHA-256 checksums and rejects modified history, version gaps, and unknown-ahead databases.
+SQLite uses a write transaction while PostgreSQL uses a transaction-scoped advisory lock.
+Migration `0001` adopts existing Phase 0 databases; migration `0002` preserves Phase 0 documents
+while adding canonical tables and immutable entity history.
+
+Mutable entities require an `expected_version` update/delete precondition. Each successful
+mutation closes the previous history interval, creates the next version, and keeps the current
+table synchronized. Delete is a tombstone mutation; `as_of` reads reconstruct prior versions.
+National identifiers cross an encryption-codec boundary and canonical storage has no plaintext
+identifier field.
+
 ## Identity, authorization, and PII
 
 Development identity comes from `ADA__DEV_USER` and `ADA__DEV_ROLE`. Application services
@@ -57,13 +76,14 @@ model receives only fields needed for its task.
 
 ## Review, provenance, and audit
 
-`ReviewRequest` and `ApprovalDecision` provide a small persistent lifecycle that intake and
-future high-impact writes can reference. `SourceRef`, `EvidenceRef`, and `ProvenanceRef` allow
-ingestion to attach references before the complete Phase 7 evidence engine exists.
+`ReviewRequest` and `ApprovalDecision` provide a persistent lifecycle that intake and
+high-impact canonical writes can reference. `SourceRef`, `EvidenceRef`, and `ProvenanceRef`
+persist independently and link to a specific canonical entity version before the complete
+Phase 7 evidence engine exists.
 
 Audit events append to `<data_path>/audit/audit.jsonl` and include actor, action, entity,
-before/after values, source, model/prompt context, confidence, and change-set identifiers.
-Mutable domain records use soft deletion and versioning in later phases.
+before/after version summaries, source, outcome, correlation ID, expected/current version,
+review request, provenance references, model/prompt context, confidence, and change-set IDs.
 
 ## Secrets, retention, and deletion
 
@@ -89,10 +109,11 @@ retention target is at least one year.
 ## CI/CD boundary
 
 Pull-request CI uses frozen dependencies and no AWS credentials. It runs formatting/lint,
-typing, unit tests, dependency/secret scanning, documentation checks, and a guard against
-tracked `data/`. Live Bedrock testing is manual and uses a protected GitHub Environment with
-short-lived AWS OIDC credentials. Phase 19 builds, scans, signs, and promotes one immutable
-container digest through dev, staging, and production with health-based rollback.
+typing, SQLite unit tests, a disposable PostgreSQL migration/repository suite, dependency and
+secret scanning, documentation checks, and a guard against tracked `data/`. Live Bedrock
+testing is manual and uses a protected GitHub Environment with short-lived AWS OIDC
+credentials. Phase 19 builds, scans, signs, and promotes one immutable container digest through
+dev, staging, and production with health-based rollback.
 
 Temporary dependency exceptions and their compensating controls are listed in
 [`security_exceptions.md`](security_exceptions.md); unlisted advisories remain blocking.

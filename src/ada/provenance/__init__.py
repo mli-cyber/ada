@@ -1,5 +1,17 @@
-"""Provenance and evidence tracking.
+"""Provenance references and canonical entity links."""
 
-Ties records and answers back to source documents (file/page/row/section, method,
-confidence). Roadmap: Phase 7 (Provenance and Evidence Engine).
-"""
+from ada.provenance.refs import EvidenceRef, ProvenanceRef, SourceRef
+from ada.provenance.store import (
+    ProvenanceBundle,
+    entity_provenance_refs,
+    save_entity_provenance,
+)
+
+__all__ = [
+    "EvidenceRef",
+    "ProvenanceBundle",
+    "ProvenanceRef",
+    "SourceRef",
+    "entity_provenance_refs",
+    "save_entity_provenance",
+]

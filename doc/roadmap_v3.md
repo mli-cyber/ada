@@ -11,8 +11,8 @@
 > *current* design intent and are expected to evolve. As the architecture is refined or as
 > phases are implemented, these diagrams will be **updated/replaced** to match. If a diagram
 > ever diverges from the implementation, treat the code and the per-phase docs (e.g.
-> [`phase_0.md`](phase_0.md)) as the source of truth. A standalone collection of all
-> diagrams with explanations lives in [`diagrams.md`](diagrams.md).
+> [`phase_0.md`](phases/phase_0.md)) as the source of truth. A standalone collection of all
+> diagrams with explanations lives in [`diagrams.md`](architecture/diagrams.md).
 
 ---
 
@@ -792,7 +792,7 @@ ingestion/, provenance/, quality/, reports/, workflows/}`, plus `app/`, `evals/`
 
 ### Phase 0 — Architecture and Security Foundation
 
-> **Detailed build plan:** see [`phase_0.md`](phase_0.md). Locked decisions: SQLite-default
+> **Detailed build plan:** see [`phase_0.md`](phases/phase_0.md). Locked decisions: SQLite-default
 > DB (`ADA__DB_URL`; Postgres opt-in), dev-auth RBAC + PII tiers (application-user OIDC
 > deferred to Phase 19),
 > functional local adapters. **Deferred to later phases:** the synthetic **input-data
@@ -821,7 +821,8 @@ ingestion/, provenance/, quality/, reports/, workflows/}`, plus `app/`, `evals/`
 - **Repo targets:** `src/ada/config.py`, `src/ada/bedrock.py`, `src/ada/platform/*`
   (identity, dataguard, review, audit, secrets, storage, db, vectors, guardrails, intake,
   maintenance), `src/ada/models/registry.py`, `src/ada/provenance/refs.py`, `app/`,
-  `example.env`, `doc/architecture.md`, `samples/phase0_seed/`, `.github/workflows/ci.yml`,
+  `example.env`, `doc/architecture/architecture.md`, `samples/phase0_seed/`,
+  `.github/workflows/ci.yml`,
   `.github/workflows/bedrock-integration.yml`, `.github/dependabot.yml`,
   `scripts/check_docs.py`.
 - **Depends on:** —
@@ -836,6 +837,11 @@ ingestion/, provenance/, quality/, reports/, workflows/}`, plus `app/`, `evals/`
   OIDC after its protected GitHub Environment is configured.
 
 ### Phase 1 — Canonical Domain Model
+
+> **Detailed build contract:** see [`phase_1.md`](phases/phase_1.md). Locked decisions include
+> forward-only checksummed migrations, optimistic concurrency, temporal history, deterministic
+> UUIDv5 fixtures, an encrypted national-identifier boundary, and read-only Phase 1 demos.
+> Due-out schema/basic CRUD land here; recurrence, escalation, and dashboards remain Phase 9.
 
 - **Goal:** Implement the initial structured data model.
 - **Scope / non-goals:** Schema + CRUD service layer. No chat, no ingestion.

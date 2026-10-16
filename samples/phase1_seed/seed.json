@@ -1,0 +1,262 @@
+{
+  "organizations": [
+    {
+      "key": "ada-command",
+      "code": "ADA",
+      "name": "Ada Command",
+      "short_name": "ADA",
+      "organization_type": "COMMAND"
+    },
+    {
+      "key": "personnel-directorate",
+      "code": "ADA-PER",
+      "name": "Personnel Directorate",
+      "short_name": "Personnel",
+      "organization_type": "DIRECTORATE"
+    },
+    {
+      "key": "operations-directorate",
+      "code": "ADA-OPS",
+      "name": "Operations Directorate",
+      "short_name": "Operations",
+      "organization_type": "DIRECTORATE"
+    },
+    {
+      "key": "operations-alpha",
+      "code": "ADA-OPS-A",
+      "name": "Operations Team Alpha",
+      "short_name": "Ops Alpha",
+      "organization_type": "TEAM"
+    }
+  ],
+  "organization_relationships": [
+    {
+      "key": "ada-command--personnel-directorate",
+      "parent_key": "ada-command",
+      "child_key": "personnel-directorate",
+      "start_date": "2025-01-01"
+    },
+    {
+      "key": "ada-command--operations-directorate",
+      "parent_key": "ada-command",
+      "child_key": "operations-directorate",
+      "start_date": "2025-01-01"
+    },
+    {
+      "key": "operations-directorate--operations-alpha",
+      "parent_key": "operations-directorate",
+      "child_key": "operations-alpha",
+      "start_date": "2025-01-01"
+    }
+  ],
+  "personnel": [
+    {
+      "key": "avery-morgan",
+      "employee_number": "ADA-1001",
+      "first_name": "Avery",
+      "last_name": "Morgan",
+      "primary_email": "avery.morgan@example.test",
+      "position_title": "Personnel Analyst",
+      "rank_grade": "G7",
+      "national_id_ciphertext": "fixture-ciphertext-avery-0001",
+      "national_id_last4": "0001"
+    },
+    {
+      "key": "jordan-quinn",
+      "employee_number": "ADA-1002",
+      "first_name": "Jordan",
+      "last_name": "Quinn",
+      "primary_email": "jordan.quinn@example.test",
+      "position_title": "Operations Planner",
+      "rank_grade": "G8"
+    },
+    {
+      "key": "riley-chen",
+      "employee_number": "ADA-1003",
+      "first_name": "Riley",
+      "last_name": "Chen",
+      "primary_email": "riley.chen@example.test",
+      "position_title": "Team Lead",
+      "rank_grade": "G9"
+    },
+    {
+      "key": "cameron-diaz",
+      "employee_number": "ADA-1004",
+      "first_name": "Cameron",
+      "last_name": "Diaz",
+      "primary_email": "cameron.diaz@example.test",
+      "position_title": "Operations Specialist",
+      "rank_grade": "G6"
+    }
+  ],
+  "personnel_assignments": [
+    {
+      "key": "avery-personnel-primary",
+      "personnel_key": "avery-morgan",
+      "organization_key": "personnel-directorate",
+      "position_title": "Personnel Analyst",
+      "start_date": "2025-01-01",
+      "is_primary": true
+    },
+    {
+      "key": "jordan-ops-primary",
+      "personnel_key": "jordan-quinn",
+      "organization_key": "operations-directorate",
+      "position_title": "Operations Planner",
+      "start_date": "2025-01-01",
+      "is_primary": true
+    },
+    {
+      "key": "riley-alpha-primary",
+      "personnel_key": "riley-chen",
+      "organization_key": "operations-alpha",
+      "position_title": "Team Lead",
+      "start_date": "2025-01-01",
+      "is_primary": true
+    },
+    {
+      "key": "cameron-personnel-historical",
+      "personnel_key": "cameron-diaz",
+      "organization_key": "personnel-directorate",
+      "position_title": "Personnel Specialist",
+      "start_date": "2025-01-01",
+      "end_date": "2025-06-30",
+      "is_primary": true
+    },
+    {
+      "key": "cameron-alpha-primary",
+      "personnel_key": "cameron-diaz",
+      "organization_key": "operations-alpha",
+      "position_title": "Operations Specialist",
+      "start_date": "2025-07-01",
+      "is_primary": true
+    }
+  ],
+  "training_courses": [
+    {
+      "key": "information-protection",
+      "code": "ADA-TRN-101",
+      "title": "Information Protection",
+      "provider": "Ada Learning",
+      "validity_days": 365
+    },
+    {
+      "key": "workplace-safety",
+      "code": "ADA-TRN-201",
+      "title": "Workplace Safety",
+      "provider": "Ada Learning",
+      "validity_days": 730
+    }
+  ],
+  "training_requirements": [
+    {
+      "key": "command-information-protection",
+      "course_key": "information-protection",
+      "organization_key": "ada-command",
+      "due_within_days": 30,
+      "inherits_to_descendants": true,
+      "effective_from": "2025-01-01"
+    },
+    {
+      "key": "ops-information-protection",
+      "course_key": "information-protection",
+      "organization_key": "operations-directorate",
+      "due_within_days": 14,
+      "inherits_to_descendants": true,
+      "effective_from": "2025-01-01"
+    },
+    {
+      "key": "avery-workplace-safety",
+      "course_key": "workplace-safety",
+      "personnel_key": "avery-morgan",
+      "due_within_days": 60,
+      "inherits_to_descendants": false,
+      "effective_from": "2025-01-01"
+    }
+  ],
+  "training_completions": [
+    {
+      "key": "avery-information-protection-2025",
+      "personnel_key": "avery-morgan",
+      "course_key": "information-protection",
+      "completed_on": "2025-06-15",
+      "expires_on": "2026-06-15",
+      "score": "PASS"
+    },
+    {
+      "key": "jordan-information-protection-2025",
+      "personnel_key": "jordan-quinn",
+      "course_key": "information-protection",
+      "completed_on": "2025-03-10",
+      "expires_on": "2026-03-10",
+      "score": "PASS"
+    }
+  ],
+  "documents": [
+    {
+      "key": "phase1-policy",
+      "filename": "phase1_policy.txt",
+      "title": "Synthetic Phase 1 Policy",
+      "hash": "6d306f9fcd71b8b7be648cf3fdcbf2d69818852f18e39e2e5702078109099f58",
+      "storage_location": "fixture://phase1_policy.txt",
+      "document_type": "policy"
+    }
+  ],
+  "due_outs": [
+    {
+      "key": "weekly-roster",
+      "title": "Submit weekly personnel roster",
+      "description": "Synthetic recurring-style roster request; no recurrence engine.",
+      "due_out_type": "DOCUMENT",
+      "status": "IN_PROGRESS",
+      "due_at": "2026-01-09T16:00:00+00:00",
+      "priority": "HIGH",
+      "owner_organization_key": "operations-directorate"
+    },
+    {
+      "key": "safety-confirmation",
+      "title": "Confirm safety roster",
+      "due_out_type": "BOOLEAN",
+      "status": "COMPLETE",
+      "due_at": "2026-01-05T16:00:00+00:00",
+      "priority": "NORMAL",
+      "owner_organization_key": "personnel-directorate"
+    }
+  ],
+  "due_out_assignments": [
+    {
+      "key": "weekly-roster-alpha",
+      "due_out_key": "weekly-roster",
+      "organization_key": "operations-alpha",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "key": "safety-confirmation-avery",
+      "due_out_key": "safety-confirmation",
+      "personnel_key": "avery-morgan",
+      "status": "COMPLETE",
+      "completed_at": "2026-01-04T13:00:00+00:00"
+    }
+  ],
+  "administrative_actions": [
+    {
+      "key": "jordan-recognition",
+      "personnel_key": "jordan-quinn",
+      "action_type": "RECOGNITION",
+      "status": "COMPLETE",
+      "summary": "Synthetic recognition record for demo coverage.",
+      "effective_from": "2025-12-15T00:00:00+00:00"
+    }
+  ],
+  "absences": [
+    {
+      "key": "avery-leave-january",
+      "personnel_key": "avery-morgan",
+      "absence_type": "LEAVE",
+      "status": "APPROVED",
+      "start_at": "2026-01-12T08:00:00+00:00",
+      "end_at": "2026-01-14T17:00:00+00:00",
+      "notes": "Synthetic leave period."
+    }
+  ]
+}

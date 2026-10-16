@@ -34,6 +34,13 @@ class AuditEvent:
     confidence: float | None = None
     prompt_version: str | None = None
     change_set_id: str | None = None
+    outcome: str = "SUCCESS"
+    entity_version: int | None = None
+    expected_version: int | None = None
+    correlation_id: str | None = None
+    review_request_id: str | None = None
+    provenance_ref_ids: tuple[str, ...] = ()
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 def audit_path(config: AdaConfig) -> Path:
@@ -65,5 +72,7 @@ def read_events(config: AdaConfig | None = None) -> list[AuditEvent]:
     events: list[AuditEvent] = []
     for line in path.read_text(encoding="utf-8").splitlines():
         if line.strip():
-            events.append(AuditEvent(**json.loads(line)))
+            payload = json.loads(line)
+            payload["provenance_ref_ids"] = tuple(payload.get("provenance_ref_ids", ()))
+            events.append(AuditEvent(**payload))
     return events
