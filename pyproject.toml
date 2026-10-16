@@ -12,7 +12,7 @@ dependencies = [
     "chromadb>=0.5.5",
     "pandas>=2.2.0",
     "openpyxl>=3.1.5",
-    "pypdf>=6.15.0",
+    "pypdf>=6.19.0",
     "pdfplumber>=0.11.10",
     "python-docx>=1.2.0",
     "pyyaml>=6.0.3",
@@ -21,10 +21,21 @@ dependencies = [
 
 [project.optional-dependencies]
 identity = [
-    "pyjwt[crypto]>=2.13.0",
+    "pyjwt[crypto]>=2.15.0",
 ]
 postgres = [
     "psycopg[binary]>=3.3.4",
+]
+
+[tool.uv]
+# Security floors for transitive packages. These constrain resolution without promoting
+# the packages to direct ADA dependencies. Parent upper bounds remain authoritative.
+constraint-dependencies = [
+    "mcp>=1.30.0,<2.0.0",
+    "multidict>=6.9.1,<7.0",
+    "oauthlib>=4.0.0,<5.0",
+    "pyjwt>=2.15.0,<3.0",
+    "urllib3>=2.8.0,<3.0",
 ]
 
 [dependency-groups]
