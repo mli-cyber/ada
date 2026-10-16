@@ -27,6 +27,9 @@ uv.lock.tmp
 data/
 src/ada/tmp/
 
+# Isolated demo-mode data environment (synthetic, disposable)
+.demo/
+
 # Local idea drafts (accepted plans live elsewhere in doc/)
 doc/new_ideas/
 

@@ -32,6 +32,11 @@ uv run python scripts/seed_phase1.py
 The seed command loads 30 deterministic, synthetic canonical records and is safe to run more
 than once. Open the Personnel and Organization pages for the Phase 1 read-only demos.
 
+For presentations, `./scripts/run_demo.sh` launches a Demo Superuser session against an
+isolated, disposable `.demo/` dataset. Demo mode is disabled by default, fails closed if the
+environment is not verifiably isolated (local SQLite + env secrets), and never runs against an
+operational database.
+
 The development launcher binds to `localhost` because the Administration page includes a
 separate `AWS Session (Local Only)` tab with a temporary SSO device-login helper. General
 demo surfaces omit the AWS profile and region; `.env` and AWS credential caches are never
@@ -88,3 +93,4 @@ full list. `.env` is gitignored.
 - [`doc/phases/phase_1.md`](doc/phases/phase_1.md) - Phase 1 canonical model specification
 - [`doc/architecture/architecture.md`](doc/architecture/architecture.md) - system boundaries
 - [`doc/product/product.md`](doc/product/product.md) - product overview and naming
+- [`doc/demo_mode.md`](doc/demo_mode.md) - Demo Superuser Mode guide and safety boundaries

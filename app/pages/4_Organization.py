@@ -13,6 +13,7 @@ if str(_SRC) not in sys.path:
 
 from ada.config import AdaConfig
 from ada.domain import Organization
+from ada.platform.demo import demo_status
 from ada.platform.identity import current_principal
 from ada.services import (
     CanonicalService,
@@ -26,6 +27,15 @@ st.title("Organization / Assignments")
 st.caption("Phase 1 hierarchy, organization scope, and personnel rollups — read-only demo")
 
 config = AdaConfig.from_env()
+status = demo_status(config)
+if status.requested and not status.active:
+    st.error(
+        "Demo mode requested but the environment is not isolated: "
+        + "; ".join(status.findings)
+    )
+    st.stop()
+if status.active:
+    st.warning(f"DEMO SUPERUSER MODE — acting as {status.display_name}. Synthetic data only.")
 principal = current_principal(config)
 records = CanonicalService(config, Organization, principal=principal).list()
 

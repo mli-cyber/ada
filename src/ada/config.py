@@ -42,6 +42,13 @@ def _int(values: Mapping[str, str], name: str, default: int) -> int:
     return value
 
 
+def _bool(values: Mapping[str, str], name: str, default: bool) -> bool:
+    raw = values.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
 @dataclass(frozen=True)
 class AdaConfig:
     """Resolved Ada configuration.
@@ -66,6 +73,8 @@ class AdaConfig:
     secrets_backend: str
     dev_user: str
     dev_role: str
+    demo_mode: bool
+    demo_data_dir: Path | None
     max_agent_loops: int
     request_timeout_seconds: int
     model_tier: str
@@ -125,6 +134,12 @@ class AdaConfig:
             secrets_backend=values.get("ADA__SECRETS_BACKEND", "env").strip().lower(),
             dev_user=values.get("ADA__DEV_USER", "dev@ada.local"),
             dev_role=values.get("ADA__DEV_ROLE", "admin").strip().lower(),
+            demo_mode=_bool(values, "ADA__DEMO_MODE", False),
+            demo_data_dir=(
+                Path(values["ADA__DEMO_DATA_DIR"])
+                if values.get("ADA__DEMO_DATA_DIR")
+                else None
+            ),
             max_agent_loops=_int(values, "ADA__MAX_AGENT_LOOPS", 8),
             request_timeout_seconds=_int(values, "ADA__REQUEST_TIMEOUT_SECONDS", 30),
             model_tier=model_tier,

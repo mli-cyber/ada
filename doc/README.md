@@ -23,6 +23,10 @@ grouped by purpose so new ideas can continue to evolve without mixing with accep
 - [Product overview](product/product.md)
 - [Phase 1 demo data](product/demo_data.md)
 
+## Operations
+
+- [Demo Superuser Mode](demo_mode.md)
+
 ## New ideas
 
 [`new_ideas/`](new_ideas/) contains proposals and historical inputs. Documents there are not

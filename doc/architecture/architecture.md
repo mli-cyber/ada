@@ -106,6 +106,28 @@ and object storage, reinitializes platform tables, and records the operation. Pr
 retention, legal hold, backup, and KMS policies are hardened in Phase 19; the initial audit
 retention target is at least one year.
 
+## Demo superuser mode
+
+Demo mode lets a presenter exercise every implemented feature without ordinary role or
+organization-scope limits, while leaving the production authorization architecture intact. It
+is implemented in `ada.platform.demo` and resolved through the single `current_principal`
+identity entry point.
+
+- It is disabled by default (`ADA__DEMO_MODE`).
+- The opt-in flag is necessary but never sufficient. Activation also requires a verifiably
+  isolated environment: local SQLite (operational PostgreSQL is rejected), the environment
+  secrets backend, and a dedicated `ADA__DEMO_DATA_DIR` that contains the database and all
+  local stores (resolved through symlinks, so an escaping path is rejected). Resolution fails
+  closed when isolation cannot be verified.
+- The demonstration identity is a dedicated, gated `demo_superuser` role, not a production
+  account. It cannot be selected through `ADA__DEV_ROLE`; attempting to do so outside verified
+  demo mode is rejected.
+- Demo writes still flow through the controlled services, so validation, audit, provenance,
+  and review all apply; audit events attribute actions to `demo_superuser`.
+- The UI shows a prominent DEMO badge, and the dedicated `scripts/run_demo.sh` launcher pins an
+  isolated `.demo/` data directory, verifies isolation before starting, seeds synthetic data,
+  and binds to localhost.
+
 ## CI/CD boundary
 
 Pull-request CI uses frozen dependencies and no AWS credentials. It runs formatting/lint,

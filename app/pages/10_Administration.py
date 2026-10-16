@@ -18,6 +18,7 @@ from ada.config import AdaConfig
 from ada.models.registry import ModelRegistry, ModelTier
 from ada.platform import db, storage, vectors
 from ada.platform.aws_auth import AwsSsoLoginError, stream_sso_login
+from ada.platform.demo import demo_status
 from ada.platform.identity import (
     ROLE_PERMISSIONS,
     Permission,
@@ -33,6 +34,18 @@ st.title("Administration")
 st.caption("Phase 0 platform health, security boundaries, and local maintenance")
 
 config = AdaConfig.from_env()
+demo = demo_status(config)
+if demo.requested and not demo.active:
+    st.error(
+        "Demo mode requested but the environment is not isolated: "
+        + "; ".join(demo.findings)
+    )
+    st.stop()
+if demo.active:
+    st.warning(
+        f"DEMO SUPERUSER MODE — acting as {demo.display_name}. "
+        "Synthetic, isolated data only."
+    )
 principal = current_principal(config)
 platform_tab, aws_tab = st.tabs(["Platform & Security", "AWS Session (Local Only)"])
 
@@ -44,6 +57,11 @@ platform_tab.table(
 platform_tab.subheader("Current principal")
 platform_tab.write(f"**User:** `{principal.user}`")
 platform_tab.write(f"**Role:** `{principal.role.value}`")
+if demo.active:
+    platform_tab.caption(
+        f"Demo superuser session: all demo permissions and organization scope "
+        f"({demo.display_name})."
+    )
 
 platform_tab.subheader("Platform health")
 db.init_db(config)

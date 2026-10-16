@@ -14,6 +14,10 @@ class Role(StrEnum):
     EDITOR = "editor"
     APPROVER = "approver"
     ADMIN = "admin"
+    # Demonstration-only role. It is never a production account and can only be
+    # resolved through verified demo mode (see ada.platform.demo); it must not be
+    # selectable via ADA__DEV_ROLE.
+    DEMO_SUPERUSER = "demo_superuser"
 
 
 class Permission(StrEnum):
@@ -56,6 +60,7 @@ ROLE_PERMISSIONS: dict[Role, frozenset[Permission]] = {
         }
     ),
     Role.ADMIN: frozenset(Permission),
+    Role.DEMO_SUPERUSER: frozenset(Permission),
 }
 
 ROLE_PII_ACCESS: dict[Role, frozenset[PIITier]] = {
@@ -63,6 +68,7 @@ ROLE_PII_ACCESS: dict[Role, frozenset[PIITier]] = {
     Role.EDITOR: frozenset({PIITier.PUBLIC, PIITier.INTERNAL}),
     Role.APPROVER: frozenset(PIITier),
     Role.ADMIN: frozenset(PIITier),
+    Role.DEMO_SUPERUSER: frozenset(PIITier),
 }
 
 
@@ -90,10 +96,24 @@ def authorize(role: Role | str, permission: Permission | str) -> bool:
 
 
 def current_principal(config: AdaConfig) -> Principal:
+    # Demo mode, when explicitly requested and verified isolated, overrides the
+    # development identity. Resolution fails closed if the environment is not
+    # verifiably isolated. Imported locally to avoid an import cycle.
+    from ada.platform.demo import resolve_demo_principal
+
+    demo = resolve_demo_principal(config)
+    if demo is not None:
+        return demo
+
     try:
         role = Role(config.dev_role)
     except ValueError as exc:
         raise ValueError(f"Invalid ADA__DEV_ROLE: {config.dev_role!r}") from exc
+    if role is Role.DEMO_SUPERUSER:
+        raise ValueError(
+            "Role 'demo_superuser' requires verified demo mode (ADA__DEMO_MODE with an "
+            "isolated SQLite environment); it cannot be selected through ADA__DEV_ROLE."
+        )
     return Principal(user=config.dev_user, role=role)
 
 

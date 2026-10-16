@@ -32,13 +32,29 @@ except Exception:  # pragma: no cover - convenience only
 
 from ada import __version__
 from ada.config import AdaConfig
+from ada.platform.demo import demo_status
 
 
 def _sidebar(config: AdaConfig) -> None:
     st.sidebar.title("Ada")
     st.sidebar.caption("AI-Driven Assistant")
+
+    status = demo_status(config)
+    if status.active:
+        st.sidebar.error(
+            f"DEMO SUPERUSER MODE\n\nActing as {status.display_name} (synthetic data only)"
+        )
+    elif status.requested:
+        st.sidebar.error(
+            "Demo mode requested but the environment is not isolated:\n\n- "
+            + "\n- ".join(status.findings)
+        )
+    st.session_state["demo_active"] = status.active
+
     st.sidebar.markdown("---")
     st.sidebar.subheader("Configuration")
+    identity = status.display_name if status.active else config.dev_role
+    st.sidebar.write(f"**Identity:** `{identity}`")
     for key, value in config.describe().items():
         st.sidebar.write(f"**{key}:** `{value}`")
     st.sidebar.markdown("---")
